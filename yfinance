@@ -1,0 +1,116 @@
+# %% [code]
+# Import necessary libraries
+import yfinance as yf
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# -----------------------------
+# Question 1: Extracting Tesla Stock Data Using yfinance (2 Points)
+# -----------------------------
+# Download Tesla stock data
+tesla_data = yf.download('TSLA')
+# Reset the index to make 'Date' a column
+tesla_data.reset_index(inplace=True)
+# Display the first five rows
+print("Tesla Stock Data (first 5 rows):")
+print(tesla_data.head())
+
+# -----------------------------
+# Question 2: Extracting Tesla Revenue Data Using Webscraping (1 Point)
+# -----------------------------
+# Example: Using pandas read_html to extract revenue data from a webpage
+# (Replace the URL with the actual page containing Tesla's revenue data)
+url_tesla = "https://www.macrotrends.net/stocks/charts/TSLA/tesla/revenue"
+try:
+    tesla_revenue_list = pd.read_html(url_tesla)
+    # Assuming the revenue table is the first table on the page
+    tesla_revenue = tesla_revenue_list[0]
+    print("\nTesla Revenue Data (last 5 rows):")
+    print(tesla_revenue.tail())
+except Exception as e:
+    print("\nError reading Tesla revenue data:", e)
+    # Alternatively, create a dummy dataframe for demonstration:
+    tesla_revenue = pd.DataFrame({
+        "Year": [2022, 2021, 2020, 2019, 2018, 2017],
+        "Revenue": [53823, 31536, 24578, 21000, 18000, 15000]
+    })
+    print("\nDummy Tesla Revenue Data (last 5 rows):")
+    print(tesla_revenue.tail())
+
+# -----------------------------
+# Question 3: Extracting GameStop Stock Data Using yfinance (2 Points)
+# -----------------------------
+# Download GameStop (GME) stock data
+gme_data = yf.download('GME')
+# Reset the index to make 'Date' a column
+gme_data.reset_index(inplace=True)
+# Display the first five rows
+print("\nGameStop Stock Data (first 5 rows):")
+print(gme_data.head())
+
+# -----------------------------
+# Question 4: Extracting GameStop Revenue Data Using Webscraping (1 Point)
+# -----------------------------
+# Example: Using pandas read_html to extract revenue data from a webpage
+# (Replace the URL with the actual page containing GameStop's revenue data)
+url_gme = "https://www.macrotrends.net/stocks/charts/GME/gamestop/revenue"
+try:
+    gme_revenue_list = pd.read_html(url_gme)
+    # Assuming the revenue table is the first table on the page
+    gme_revenue = gme_revenue_list[0]
+    print("\nGameStop Revenue Data (last 5 rows):")
+    print(gme_revenue.tail())
+except Exception as e:
+    print("\nError reading GameStop revenue data:", e)
+    # Alternatively, create a dummy dataframe for demonstration:
+    gme_revenue = pd.DataFrame({
+        "Year": [2022, 2021, 2020, 2019, 2018, 2017],
+        "Revenue": [1245, 980, 875, 750, 600, 500]
+    })
+    print("\nDummy GameStop Revenue Data (last 5 rows):")
+    print(gme_revenue.tail())
+
+# -----------------------------
+# Define a custom function to create a stock price graph
+# -----------------------------
+def make_graph(data, title):
+    plt.figure(figsize=(10, 5))
+    # Plot the closing price over time
+    plt.plot(data['Date'], data['Close'], label='Closing Price', color='blue')
+    plt.title(title)
+    plt.xlabel('Date')
+    plt.ylabel('Price ($)')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+# -----------------------------
+# Question 5: Tesla Stock and Revenue Dashboard (2 Points)
+# -----------------------------
+# Plot Tesla Stock Graph
+make_graph(tesla_data, "Tesla Stock Price Over Time")
+
+# Optionally, display Tesla revenue data as a table or additional plot
+# For example, plotting revenue if the data is numeric and time-based:
+if 'Year' in tesla_revenue.columns and 'Revenue' in tesla_revenue.columns:
+    plt.figure(figsize=(8, 4))
+    plt.bar(tesla_revenue['Year'], tesla_revenue['Revenue'], color='orange')
+    plt.title("Tesla Revenue Over Years")
+    plt.xlabel("Year")
+    plt.ylabel("Revenue (in millions)")
+    plt.show()
+
+# -----------------------------
+# Question 6: GameStop Stock and Revenue Dashboard (2 Points)
+# -----------------------------
+# Plot GameStop Stock Graph
+make_graph(gme_data, "GameStop Stock Price Over Time")
+
+# Optionally, display GameStop revenue data as a table or additional plot:
+if 'Year' in gme_revenue.columns and 'Revenue' in gme_revenue.columns:
+    plt.figure(figsize=(8, 4))
+    plt.bar(gme_revenue['Year'], gme_revenue['Revenue'], color='green')
+    plt.title("GameStop Revenue Over Years")
+    plt.xlabel("Year")
+    plt.ylabel("Revenue (in millions)")
+    plt.show()
